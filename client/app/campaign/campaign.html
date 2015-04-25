@@ -5,7 +5,7 @@
 
     </div>
     <div class="col-sm-12">
-      <form class="form" name="form" ng-submit="crateCampaign(form)" novalidate>
+      <form class="form" name="form" ng-submit="savecampaign(form)" novalidate>
 
         <div class="form-group">
           <label>Campaign Name</label>
@@ -22,7 +22,7 @@
         <div class="form-group">
           <label>Search Engine</label>
 
-          <select name="search_engine" class="form-control" ng-model="campaign.search_engine" ng-options="engine.name for engine in allengines" >
+          <select name="search_engine" class="form-control" ng-model="campaign.search_engine" ng-options="engine.name for engine in allengines track by engine.id" >
               <option selected>Select Search Engine</option>
           </select>
         </div>
@@ -43,7 +43,7 @@
         </div>
 
         <div>
-          <button class="btn btn-inverse btn-lg btn-login" type="submit">
+          <button class="btn btn-inverse btn-lg btn-login" type="submit" >
             Create Campaign
           </button>
         </div>

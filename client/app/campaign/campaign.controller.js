@@ -1,11 +1,14 @@
 'use strict';
 
 angular.module('canApp')
-  .controller('CampaignCtrl', ['$scope','$rootScope','$http','$location','$filter', function($scope, $rootScope, $http, $location,$filter) {
+  .controller('CampaignCtrl', ['$scope', '$q','$rootScope','$http','$location','$filter', function($scope,  $q, $rootScope, $http, $location,$filter) {
     $scope.message = 'Hello';
     $scope.rootURL = 'http://api.domaincrawler.com/v2/';
     $scope.login_email = 'api_username=cem@copypanthers.com';
     $scope.login_API_KEY = 'api_key=4adca9f52d8719155f9c898a2b8c38da56364e48';
+
+    //campaign init
+    $scope.campaign= {}
 
     var headers = {
       'Access-Control-Allow-Origin' : '*',
@@ -31,11 +34,19 @@ angular.module('canApp')
 
     //Create Campaign
     //create company
-    scope.createCampaitn = function(form){
+    var createcampaign = function(form){
       var deferred = $q.defer();
+      console.log($scope.campaign);
+      var payload = {
+        name          : $scope.campaign.name,
+        searchengine_id: $scope.campaign.searchengine
+      };
 
-      var payload = company;
-      $http.post('/api/company', payload )
+      var urlPost = $scope.rootURL+'campaigns?'+ $scope.login_email+'&'+$scope.login_API_KEY;
+      //first create campain
+
+
+      $http.post(urlPost, payload )
         .success(function(data, status, headers, config) {
           deferred.resolve(data);
         })
@@ -44,4 +55,20 @@ angular.module('canApp')
         })
       return deferred.promise;
     };
+
+    //check
+   $scope.savecampaign = function(form){
+      createcampaign(form)
+     then(function(data){
+
+       console.log(data);
+
+     })
+       .catch(function(errors){
+         $scope.errors = errors;
+       }).finally(function(data){
+
+       });
+   }
+
   }]);
