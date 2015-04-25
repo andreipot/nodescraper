@@ -15,6 +15,10 @@ angular.module('canApp', [
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+
+    //cors
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
   })
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {

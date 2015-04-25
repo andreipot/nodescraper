@@ -1,0 +1,55 @@
+<div class="container" >
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Create Campaign</h1>
+
+    </div>
+    <div class="col-sm-12">
+      <form class="form" name="form" ng-submit="crateCampaign(form)" novalidate>
+
+        <div class="form-group">
+          <label>Campaign Name</label>
+
+          <input type="text" name="name" class="form-control" ng-model="campaign.name" required>
+        </div>
+
+        <div class="form-group">
+          <label>Domain</label>
+
+          <input type="text" name="domain" class="form-control" ng-model="campaign.domain" required>
+        </div>
+
+        <div class="form-group">
+          <label>Search Engine</label>
+
+          <select name="search_engine" class="form-control" ng-model="campaign.search_engine" ng-options="engine.name for engine in allengines" >
+              <option selected>Select Search Engine</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Keywords File</label>
+
+          <input type="text" name="domain" class="form-control" ng-model="campaign.domain" required>
+        </div>
+
+
+
+        <div class="form-group has-error">
+          <p class="help-block" ng-show="form.name.$error.required && form.domain.$error.required && submitted">
+            Please enter your campaign name and domain.
+          </p>
+          <p class="help-block">{{ errors.other }}</p>
+        </div>
+
+        <div>
+          <button class="btn btn-inverse btn-lg btn-login" type="submit">
+            Create Campaign
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <hr>
+</div>
