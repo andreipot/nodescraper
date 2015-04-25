@@ -41,13 +41,35 @@ angular.module('canApp')
         name          : $scope.campaign.name,
         searchengine_id: $scope.campaign.searchengine
       };
+      var serializedData = $.param(payload);
+      console.log(serializedData);
 
       var urlPost = $scope.rootURL+'campaigns?'+ $scope.login_email+'&'+$scope.login_API_KEY;
       //first create campain
 
 
-      $http.post(urlPost, payload )
-        .success(function(data, status, headers, config) {
+      /*
+      $http({
+        method: 'POST',
+        url: urlPost,
+        data: serializedData,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }}).then(function(result) {
+        console.log(result);
+      }, function(error) {
+        console.log(error);
+      }); */
+
+      //$http.post(urlPost, payload )
+      $http({
+        method: 'POST',
+        url: urlPost,
+        data: serializedData,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }})
+             .success(function(data, status, headers, config) {
           deferred.resolve(data);
         })
         .error(function(data){
@@ -59,15 +81,13 @@ angular.module('canApp')
     //check
    $scope.savecampaign = function(form){
       createcampaign(form)
-     then(function(data){
-
-       console.log(data);
-
+        .then(function(data){
+          $scope.campaign_id = data.id;
      })
        .catch(function(errors){
          $scope.errors = errors;
        }).finally(function(data){
-
+          console.log('finally:'+data);
        });
    }
 

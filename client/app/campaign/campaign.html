@@ -22,7 +22,7 @@
         <div class="form-group">
           <label>Search Engine</label>
 
-          <select name="search_engine" class="form-control" ng-model="campaign.search_engine" ng-options="engine.name for engine in allengines track by engine.id" >
+          <select name="search_engine" class="form-control" ng-model="campaign.searchengine" ng-options="engine.name for engine in allengines track by engine.id" >
               <option selected>Select Search Engine</option>
           </select>
         </div>
@@ -33,6 +33,9 @@
           <input type="text" name="domain" class="form-control" ng-model="campaign.domain" required>
         </div>
 
+        <div class="form-group">
+          <lablel>New campaign created : {{campaign_id}}</lablel>
+        </div>
 
 
         <div class="form-group has-error">
