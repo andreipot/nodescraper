@@ -23,7 +23,9 @@ exports.show = function(req, res) {
 // Creates a new campaign in the DB.
 exports.create = function(req, res) {
   Campaign.create(req.body, function(err, campaign) {
+
     if(err) { return handleError(res, err); }
+
     return res.json(201, campaign);
   });
 };

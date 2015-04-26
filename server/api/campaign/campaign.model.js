@@ -5,8 +5,9 @@ var mongoose = require('mongoose'),
 
 var CampaignSchema = new Schema({
   name: String,
-  info: String,
-  active: Boolean
+  domain: String,
+  searchengine_id: Number,
+  keyword_collection: Number
 });
 
 module.exports = mongoose.model('Campaign', CampaignSchema);

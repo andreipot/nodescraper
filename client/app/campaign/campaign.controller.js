@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('canApp')
-  .controller('CampaignCtrl', ['$scope', '$q','$rootScope','$http','$location','$filter', function($scope,  $q, $rootScope, $http, $location,$filter) {
+  .controller('CampaignCtrl', ['$scope', '$q','$rootScope','$http','$location','$filter','Campaign', function($scope,  $q, $rootScope, $http, $location,$filter, Campaign) {
     $scope.message = 'Hello';
     $scope.rootURL = 'http://api.domaincrawler.com/v2/';
     $scope.login_email = 'api_username=cem@copypanthers.com';
@@ -47,21 +47,6 @@ angular.module('canApp')
       var urlPost = $scope.rootURL+'campaigns?'+ $scope.login_email+'&'+$scope.login_API_KEY;
       //first create campain
 
-
-      /*
-      $http({
-        method: 'POST',
-        url: urlPost,
-        data: serializedData,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }}).then(function(result) {
-        console.log(result);
-      }, function(error) {
-        console.log(error);
-      }); */
-
-      //$http.post(urlPost, payload )
       $http({
         method: 'POST',
         url: urlPost,
@@ -79,17 +64,40 @@ angular.module('canApp')
     };
 
 
+
     //check
-          $scope.savecampaign = function(form){
-            createcampaign(form)
-              .then(function(data){
-                $scope.campaign_id = data.id;
+    $scope.savecampaign = function(form){
+      createcampaign(form)
+        .then(function(data){
+          $scope.campaign_id = data.id;
+
+          //save form into monogodb by calling local API
+
+          $scope.submitted = true;
+
+          if(form.$valid) {
+            Campaign.create({
+              name: $scope.domain.name,
+              domain: $scope.campaign.domain,
+              searchengine_id:$scope.campaign.searchengine_id
+            })
+              .then( function(data) {
+                // Logged in, redirect to home
+                console.log('saved');
+                console.log(data);
+                $location.path('/campaign');
               })
-              .catch(function(errors){
-         $scope.errors = errors;
-       }).finally(function(data){
-          console.log('finally:'+data);
-       });
+              .catch( function(err) {
+                $scope.errors.other = err.message;
+              });
+          }
+
+        })
+        .catch(function(errors){
+          $scope.errors = errors;
+      }).finally(function(data){
+      console.log('finally:'+data);
+    });
    }
 
   }]);
