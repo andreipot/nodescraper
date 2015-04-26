@@ -78,13 +78,14 @@ angular.module('canApp')
       return deferred.promise;
     };
 
+
     //check
-   $scope.savecampaign = function(form){
-      createcampaign(form)
-        .then(function(data){
-          $scope.campaign_id = data.id;
-     })
-       .catch(function(errors){
+          $scope.savecampaign = function(form){
+            createcampaign(form)
+              .then(function(data){
+                $scope.campaign_id = data.id;
+              })
+              .catch(function(errors){
          $scope.errors = errors;
        }).finally(function(data){
           console.log('finally:'+data);
