@@ -76,20 +76,9 @@ angular.module('canApp')
           $scope.submitted = true;
 
           if(form.$valid) {
-            Campaign.create({
-              name: $scope.domain.name,
-              domain: $scope.campaign.domain,
-              searchengine_id:$scope.campaign.searchengine_id
-            })
-              .then( function(data) {
-                // Logged in, redirect to home
-                console.log('saved');
+              Campaign.save($scope.campaign, function(data){
                 console.log(data);
-                $location.path('/campaign');
               })
-              .catch( function(err) {
-                $scope.errors.other = err.message;
-              });
           }
 
         })
