@@ -1,14 +1,20 @@
 'use strict';
 
 angular.module('canApp')
-  .controller('CampaignCtrl', ['$scope', '$q','$rootScope','$http','$location','$filter','Campaign', function($scope,  $q, $rootScope, $http, $location,$filter, Campaign) {
+  .controller('CampaignCtrl', ['$scope', '$q','$rootScope','$http','$location','$filter','Campaign','Searchword', function($scope,  $q, $rootScope, $http, $location,$filter, Campaign, Searchword) {
     $scope.message = 'Hello';
     $scope.rootURL = 'http://api.domaincrawler.com/v2/';
     $scope.login_email = 'api_username=cem@copypanthers.com';
     $scope.login_API_KEY = 'api_key=4adca9f52d8719155f9c898a2b8c38da56364e48';
 
     //campaign init
-    $scope.campaign= {}
+    $scope.campaign= {};
+    $scope.searchword = {
+      campaign_id : 0,
+      searchengine_id : 0,
+      response: '',
+      keyword: ''
+    };
 
     var headers = {
       'Access-Control-Allow-Origin' : '*',
@@ -63,7 +69,38 @@ angular.module('canApp')
       return deferred.promise;
     };
 
+    //csv file upload...
+    $scope.MyFiles=[];
 
+    $scope.handler=function(e,files){
+      var reader=new FileReader();
+      reader.onload=function(e){
+        var string=reader.result;
+        var obj=$filter('csvToObj')(string);
+        //do what you want with obj !
+        //save Keyword collection...
+        console.log(obj);
+        $scope.MyFiles = obj;
+      }
+      reader.readAsText(files[0]);
+    }
+
+    //save searchword collection
+    $scope.saveKeywordsCollection = function(data){
+        Searchword.save($scope.searchword, function(data){
+            console.log(data);
+          //save data keyword
+          _.forEach($scope.MyFiles,function(entry){
+            $scope.searchword.keyword = entry;
+            $scope.searchword.campaign_id = $scope.campaign_id;
+            $scope.searchword.searchengine_id = $scope.campaign.searchengine_id;
+            $scope.searchword.response = '';
+            saveKeywordsCollection($scope.searchword, function(result){
+              console.log('keyword saved');
+            });
+          });
+        });
+    }
 
     //check
     $scope.savecampaign = function(form){

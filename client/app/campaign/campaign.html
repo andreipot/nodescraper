@@ -30,7 +30,8 @@
         <div class="form-group">
           <label>Keywords File</label>
 
-          <input type="text" name="domain" class="form-control" ng-model="campaign.domain" required>
+
+          <input type="file" name="campaign.keywordfile" class="form-control" required file-change="handler($event,files)" ng-model="MyFiles" />
         </div>
 
         <div class="form-group">
