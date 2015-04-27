@@ -15,6 +15,7 @@ angular.module('canApp')
         })
         .then( function() {
           // Logged in, redirect to home
+
           $location.path('/');
         })
         .catch( function(err) {

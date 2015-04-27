@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('canApp')
-  .controller('CampaignCtrl', ['$scope', '$q','$rootScope','$http','$location','$filter','Campaign','Searchword', function($scope,  $q, $rootScope, $http, $location,$filter, Campaign, Searchword) {
-    $scope.message = 'Hello';
+  .controller('CampaignCtrl', ['$scope', '$q','$rootScope','$http','$location','$filter','Campaign','Searchword','Auth', function($scope,  $q, $rootScope, $http, $location,$filter, Campaign, Searchword,Auth) {
     $scope.rootURL = 'http://api.domaincrawler.com/v2/';
     $scope.login_email = 'api_username=cem@copypanthers.com';
     $scope.login_API_KEY = 'api_key=4adca9f52d8719155f9c898a2b8c38da56364e48';
@@ -15,7 +14,7 @@ angular.module('canApp')
       response: '',
       keyword: ''
     };
-
+    console.log(Auth.getCurrentUser());
     var headers = {
       'Access-Control-Allow-Origin' : '*',
       'Access-Control-Allow-Methods' : 'POST, GET, OPTIONS, PUT',
@@ -80,24 +79,34 @@ angular.module('canApp')
         //do what you want with obj !
         //save Keyword collection...
         console.log(obj);
+        console.log('got files');
         $scope.MyFiles = obj;
       }
       reader.readAsText(files[0]);
     }
 
-    //save searchword collection
-    $scope.saveKeywordsCollection = function(data){
-        Searchword.save($scope.searchword, function(data){
-            console.log(data);
-          //save data keyword
-          _.forEach($scope.MyFiles,function(entry){
-            $scope.searchword.keyword = entry;
+              //save searchword collection
+              $scope.saveKeywordsCollection = function(data){
+
+              //save data keyword
+              angular.forEach($scope.MyFiles,function(entry,key){
+                var keyword_document = {
+              keyword :entry.keyword,
+              campaign_id: $scope.campaign_id,
+              searchengine_id: $scope.campaign.searchengine,
+              response: ''
+            };
+            /*
+            $scope.searchword.keyword = entry.keyword;
             $scope.searchword.campaign_id = $scope.campaign_id;
             $scope.searchword.searchengine_id = $scope.campaign.searchengine_id;
             $scope.searchword.response = '';
-            saveKeywordsCollection($scope.searchword, function(result){
+            */
+            console.log('saving');
+            console.log(keyword_document);
+            Searchword.save(keyword_document, function(data){
+              console.log(data);
               console.log('keyword saved');
-            });
           });
         });
     }
@@ -115,6 +124,7 @@ angular.module('canApp')
           if(form.$valid) {
               Campaign.save($scope.campaign, function(data){
                 console.log(data);
+                $scope.saveKeywordsCollection(data);
               })
           }
 

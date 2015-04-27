@@ -7,7 +7,10 @@ var CampaignSchema = new Schema({
   name: String,
   domain: String,
   searchengine_id: Number,
-  keyword_collection: Number
+  keyword_collection: Number,
+  user:[
+    {type: Schema.Types.ObjectId, ref: 'User'}
+  ]
 });
 
 module.exports = mongoose.model('Campaign', CampaignSchema);

@@ -5,9 +5,11 @@ var mongoose = require('mongoose'),
 
 var SearchwordSchema = new Schema({
   keyword :  String,
-  campaign_id: Number,
   searchengine_id: Number,
-  response : String
+  response : String,
+  campaign_id:[
+    {type: Schema.Types.ObjectId, ref: 'Campaign'}
+  ]
 });
 
 module.exports = mongoose.model('Searchword', SearchwordSchema);
