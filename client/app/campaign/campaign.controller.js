@@ -10,11 +10,15 @@ angular.module('canApp')
     $scope.campaign= {};
     $scope.searchword = {
       campaign_id : 0,
-      searchengine_id : 0,
+      searchengine_id : 1,
       response: '',
       keyword: ''
     };
-    console.log(Auth.getCurrentUser());
+    //test init
+    $scope.campaign.searchengine = 1;
+  // $scope.campaign.user_id = Auth.getCurrentUser()._id;
+
+    //console.log(Auth.getCurrentUser());
     var headers = {
       'Access-Control-Allow-Origin' : '*',
       'Access-Control-Allow-Methods' : 'POST, GET, OPTIONS, PUT',
@@ -24,6 +28,7 @@ angular.module('canApp')
 
     //first fill in all search engines...
     var urlSearchEngineBase = $scope.rootURL+'searchengines?'+ $scope.login_email+'&'+$scope.login_API_KEY;
+    console.log(urlSearchEngineBase);
     var onResourceComplete = function(response) {
       $scope.allengines = response.data;
 
@@ -32,6 +37,7 @@ angular.module('canApp')
     var onError = function(reason) {
       $scope.error = "Could not fetch search engines";
     };
+
 
     $http.get(urlSearchEngineBase)
       .then(onResourceComplete, onError);
@@ -132,7 +138,7 @@ angular.module('canApp')
         .catch(function(errors){
           $scope.errors = errors;
       }).finally(function(data){
-      console.log('finally:'+data);
+
     });
    }
 

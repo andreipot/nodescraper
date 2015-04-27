@@ -8,7 +8,7 @@ var CampaignSchema = new Schema({
   domain: String,
   searchengine_id: Number,
   keyword_collection: Number,
-  user:[
+  user_id:[
     {type: Schema.Types.ObjectId, ref: 'User'}
   ]
 });
