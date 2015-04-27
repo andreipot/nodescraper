@@ -5,6 +5,7 @@ angular.module('canApp')
     $routeProvider
       .when('/campaign', {
         templateUrl: 'app/campaign/campaign.html',
-        controller: 'CampaignCtrl'
+        controller: 'CampaignCtrl',
+        authenticate: true
       });
   });

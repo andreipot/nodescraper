@@ -29,6 +29,7 @@ angular.module('canApp')
     //first fill in all search engines...
     var urlSearchEngineBase = $scope.rootURL+'searchengines?'+ $scope.login_email+'&'+$scope.login_API_KEY;
     console.log(urlSearchEngineBase);
+
     var onResourceComplete = function(response) {
       $scope.allengines = response.data;
 

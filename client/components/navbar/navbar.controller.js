@@ -5,7 +5,19 @@ angular.module('canApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
-    }];
+    }
+    ];
+
+    $scope.loginMenu = [
+      {
+        'title': 'Campaign',
+        'link': '/campaign'
+      },
+      {
+        'title': 'SERP',
+        'link': '/searchword'
+      }
+    ];
 
     $scope.isCollapsed = true;
     $scope.isLoggedIn = Auth.isLoggedIn;

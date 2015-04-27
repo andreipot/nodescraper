@@ -5,6 +5,7 @@ angular.module('canApp')
     $routeProvider
       .when('/searchword', {
         templateUrl: 'app/searchword/searchword.html',
-        controller: 'SearchwordCtrl'
+        controller: 'SearchwordCtrl',
+        authenticate: true
       });
   });
