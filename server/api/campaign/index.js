@@ -6,7 +6,8 @@ var controller = require('./campaign.controller');
 var router = express.Router();
 
 router.get('/', controller.index);
-router.get('/test',controller.dosomething);
+router.get('/searchengines',controller.searchengines);
+router.post('/createcampaign',controller.createcampaign);
 router.get('/:id', controller.show);
 router.post('/', controller.create);
 router.put('/:id', controller.update);

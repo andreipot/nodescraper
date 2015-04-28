@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var http = require('http');
+var request = require('request');
 var Campaign = require('./campaign.model');
 
 // Get list of campaigns
@@ -34,32 +35,37 @@ exports.create = function(req, res) {
   });
 };
 
-exports.dosomething = function(req, response) {
-  var url ='api.domaincrawler.com';
-  var options = {
-    host: url,
-    path: '/v2/searchengines?api_username=cem@copypanthers.com&api_key=4adca9f52d8719155f9c898a2b8c38da56364e48',
-    method: 'get'
-  };
-  console.log('in node');
-  var req = http.get(options, function(res) {
-  //  console.log('STATUS: ' + res.statusCode);
-  //  console.log('HEADERS: ' + JSON.stringify(res.headers));
-    // Buffer the body entirely for processing as a whole.
-    var bodyChunks = [];
-    res.on('data', function(chunk) {
-      // You can process streamed parts here...
-      bodyChunks.push(chunk);
-    }).on('end', function() {
-      var body = Buffer.concat(bodyChunks);
-      console.log('BODY: ' + body);
-      response.json(body.toString('utf8'));
-    })
-  });
+exports.searchengines = function(req, response) {
 
-  req.on('error', function(e) {
-    console.log('ERROR: ' + e.message);
-  });
+  var rootURL = 'http://api.domaincrawler.com/v2/searchengines?api_username=cem@copypanthers.com&api_key=4adca9f52d8719155f9c898a2b8c38da56364e48';
+
+  request(rootURL, function (error, res, body) {
+    if (!error && res.statusCode == 200) {
+      console.log(body) // Show the HTML for the Google homepage.
+      response.json(body.toString('utf8'));
+    }
+  })
+};
+exports.createcampaign = function(req, response) {
+
+  var rootURL = 'http://api.domaincrawler.com/v2/campaigns?api_username=cem@copypanthers.com&api_key=4adca9f52d8719155f9c898a2b8c38da56364e48';
+  console.log(req.body);
+  var payload = {
+    name          : req.body.name,
+    searchengine_id: req.body.searchengine_id
+  };
+
+  request.post({url:rootURL, form: payload}, function(err,res,body){
+    //output data;
+    if (err) {
+      return console.error('upload failed:', err);
+    }
+   // if (!err && res.statusCode == 200) {
+      console.log('Upload successful!  Server responded with:', body);
+      response.json(body.toString('utf8'));
+   // }
+  })
+
 };
 
 // Updates an existing campaign in the DB.

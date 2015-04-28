@@ -15,71 +15,51 @@ angular.module('canApp')
       keyword: ''
     };
     //test init
-    $scope.campaign.searchengine = 1;
-  // $scope.campaign.user_id = Auth.getCurrentUser()._id;
-
-    //console.log(Auth.getCurrentUser());
-    var headers = {
-      'Access-Control-Allow-Origin' : '*',
-      'Access-Control-Allow-Methods' : 'POST, GET, OPTIONS, PUT',
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
-
+    $scope.campaign.user_id = Auth.getCurrentUser()._id;
     //first fill in all search engines...
     var urlSearchEngineBase = $scope.rootURL+'searchengines?'+ $scope.login_email+'&'+$scope.login_API_KEY;
     console.log(urlSearchEngineBase);
 
     var onResourceComplete = function(response) {
       $scope.allengines = JSON.parse(response.data);
-      console.log('success');
-      console.log(response.data);
-
+    //  console.log('success');
+    //  console.log(response.data);
     };
 
-
-    function ab2str(buf) {
-      return String.fromCharCode.apply(null, new Uint16Array(buf));
-    }
     var onError = function(reason) {
       $scope.error = "Could not fetch search engines";
       console.log($scope.error);
     };
 
-    $http.get('/api/campaigns/test')
+    $http.get('/api/campaigns/searchengines')
       .then(onResourceComplete, onError);
 
-  /*  $http.get(urlSearchEngineBase)
-      .then(onResourceComplete, onError);*/
-
-
-    //Create Campaign
+      //Create Campaign
     //create company
     var createcampaign = function(form){
       var deferred = $q.defer();
+
       console.log($scope.campaign);
       var payload = {
         name          : $scope.campaign.name,
-        searchengine_id: $scope.campaign.searchengine
+        searchengine_id: $scope.campaign.searchengine.id
       };
-      var serializedData = $.param(payload);
-      console.log(serializedData);
-
-      var urlPost = $scope.rootURL+'campaigns?'+ $scope.login_email+'&'+$scope.login_API_KEY;
+            var urlPost = $scope.rootURL+'campaigns?'+ $scope.login_email+'&'+$scope.login_API_KEY;
       //first create campain
 
       $http({
         method: 'POST',
-        url: urlPost,
-        data: serializedData,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }})
-             .success(function(data, status, headers, config) {
+        url: '/api/campaigns/createcampaign',
+        data: payload
+        })
+        .success(function(data, status, headers, config) {
           deferred.resolve(data);
+          console.log(data);
         })
         .error(function(data){
           deferred.reject(data);
+          console.log('error');
+          console.log(data);
         })
       return deferred.promise;
     };
@@ -101,43 +81,48 @@ angular.module('canApp')
       reader.readAsText(files[0]);
     }
 
-              //save searchword collection
-              $scope.saveKeywordsCollection = function(data){
+      //save searchword collection
+      $scope.saveKeywordsCollection = function(data){
 
-              //save data keyword
-              angular.forEach($scope.MyFiles,function(entry,key){
-                var keyword_document = {
-              keyword :entry.keyword,
-              campaign_id: $scope.campaign_id,
-              searchengine_id: $scope.campaign.searchengine,
-              response: ''
-            };
-            /*
-            $scope.searchword.keyword = entry.keyword;
-            $scope.searchword.campaign_id = $scope.campaign_id;
-            $scope.searchword.searchengine_id = $scope.campaign.searchengine_id;
-            $scope.searchword.response = '';
-            */
-            console.log('saving');
-            console.log(keyword_document);
-            Searchword.save(keyword_document, function(data){
-              console.log(data);
-              console.log('keyword saved');
-          });
-        });
+      //save data keyword
+      angular.forEach($scope.MyFiles,function(entry,key){
+        var keyword_document = {
+      keyword :entry.keyword,
+      campaign_id: $scope.campaign_id,
+      searchengine_id: $scope.campaign.searchengine,
+      response: ''
+    };
+
+    console.log('saving');
+    console.log(keyword_document);
+    Searchword.save(keyword_document, function(data){
+      console.log(data);
+      console.log('keyword saved');
+  });
+});
     }
 
     //check
     $scope.savecampaign = function(form){
       createcampaign(form)
         .then(function(data){
-          $scope.campaign_id = data.id;
+          var result = JSON.parse(data);
+          console.log(result);
+          $scope.campaign_id = result.id;
 
           //save form into monogodb by calling local API
 
           $scope.submitted = true;
 
           if(form.$valid) {
+
+
+            var campaigndata = {
+              name: $scope.campaign.name,
+              domain: $scope.campaign.domain,
+              searchengine_id:  $scope.campaign.searchengine.id,
+              user_id: $scope.campaign.user_id
+            }
               Campaign.save($scope.campaign, function(data){
                 console.log(data);
                 $scope.saveKeywordsCollection(data);
@@ -147,8 +132,9 @@ angular.module('canApp')
         })
         .catch(function(errors){
           $scope.errors = errors;
+          console.log(errors);
       }).finally(function(data){
-
+        console.log('got');
     });
    }
 
