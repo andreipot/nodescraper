@@ -31,17 +31,26 @@ angular.module('canApp')
     console.log(urlSearchEngineBase);
 
     var onResourceComplete = function(response) {
-      $scope.allengines = response.data;
+      $scope.allengines = JSON.parse(response.data);
+      console.log('success');
+      console.log(response.data);
 
     };
 
+
+    function ab2str(buf) {
+      return String.fromCharCode.apply(null, new Uint16Array(buf));
+    }
     var onError = function(reason) {
       $scope.error = "Could not fetch search engines";
+      console.log($scope.error);
     };
 
-
-    $http.get(urlSearchEngineBase)
+    $http.get('/api/campaigns/test')
       .then(onResourceComplete, onError);
+
+  /*  $http.get(urlSearchEngineBase)
+      .then(onResourceComplete, onError);*/
 
 
     //Create Campaign
