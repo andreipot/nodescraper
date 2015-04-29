@@ -24,7 +24,7 @@ angular.module('canApp')
     //create company
     $scope.doSERP = function(form){
       var deferred = $q.defer();
-
+      $scope.updatedata = new Searchword();
       var payload = {
         keyword          : $scope.searchword.keyword.keyword,
         searchengine_id: 1
@@ -37,11 +37,15 @@ angular.module('canApp')
         .success(function(data, status, headers, config) {
           deferred.resolve(data);
           console.log(data);
-              $scope.searchword.response = data;
-              Searchword.update($scope.searchword,function(data){
-                console.log('updated');
-                console.log(data);
-              })
+
+              $scope.updatedata= Searchword.get({id : $scope.searchword.keyword._id},function(){
+                $scope.updatedata.response = data;
+                $scope.updatedata.$update(function(){
+                  console.log('done');
+                });
+              });
+
+
         })
         .error(function(data){
           deferred.reject(data);
