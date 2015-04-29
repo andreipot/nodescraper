@@ -84,22 +84,23 @@ angular.module('canApp')
       //save searchword collection
       $scope.saveKeywordsCollection = function(data){
 
-      //save data keyword
-      angular.forEach($scope.MyFiles,function(entry,key){
-        var keyword_document = {
-      keyword :entry.keyword,
-      campaign_id: $scope.campaign_id,
-      searchengine_id: $scope.campaign.searchengine,
-      response: ''
-    };
+        //save data keyword
+        angular.forEach($scope.MyFiles,function(entry,key){
+              var keyword_document = {
+            keyword :entry.keyword,
+                created_campaign_id: $scope.campaign_id,
+                campaign_id:$scope.current_campaign,
+            searchengine_id: $scope.campaign.searchengine.id,
+            response: ''
+          };
 
-    console.log('saving');
-    console.log(keyword_document);
-    Searchword.save(keyword_document, function(data){
-      console.log(data);
-      console.log('keyword saved');
-  });
-});
+          console.log('saving');
+          console.log(keyword_document);
+          Searchword.save(keyword_document, function(data){
+            console.log(data);
+            console.log('keyword saved');
+        });
+      });
     }
 
     //check
@@ -109,22 +110,21 @@ angular.module('canApp')
           var result = JSON.parse(data);
           console.log(result);
           $scope.campaign_id = result.id;
-
           //save form into monogodb by calling local API
 
           $scope.submitted = true;
 
           if(form.$valid) {
-
-
             var campaigndata = {
               name: $scope.campaign.name,
               domain: $scope.campaign.domain,
+            created_campaign_id:$scope.campaign_id,
               searchengine_id:  $scope.campaign.searchengine.id,
               user_id: $scope.campaign.user_id
             }
-              Campaign.save($scope.campaign, function(data){
+              Campaign.save(campaigndata, function(data){
                 console.log(data);
+                $scope.current_campaign = data._id;
                 $scope.saveKeywordsCollection(data);
               })
           }

@@ -11,17 +11,22 @@
         <div class="form-group">
           <label>Select Campaign</label>
 
-
-          <select name="campaign_id" class="form-control" ng-model="keyword.campaign_id" ng-options="campaign.name for campaign in campaigns track by campaign.id" >
+          <select name="campaign_id" class="form-control" ng-model="searchword.campaign_id" ng-options="campaign.name for campaign in campaigns track by campaign.created_campaign_id" >
             <option selected>Select Campaign</option>
           </select>
         </div>
 
         <div class="form-group">
           <label>Select Keyword</label>
-          <input type="text" name="keyword" class="form-contorl" ng-model="searchword.keyword">
+
+          <select name="keyword" class="form-control" ng-model="searchword.keyword" ng-options="searchword.keyword for searchword in searchwords track by searchword.keyword" >
+            <option selected>Select Keyword</option>
+          </select>
         </div>
 
+
+
+        <!--
         <div class="form-group">
           <label>Search Engine</label>
 
@@ -30,7 +35,7 @@
           </select>
         </div>
 
-
+        -->
 
         <div class="form-group">
           <lablel>Keyword serped : </lablel>

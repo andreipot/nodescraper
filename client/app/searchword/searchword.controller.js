@@ -9,7 +9,9 @@ angular.module('canApp')
 
     //get all campaigns
     $scope.campaigns = Campaign.query();
-
+    console.log($scope.campaigns);
+    //get all keywrods for a specific campaign
+    $scope.searchwords = Searchword.query();//{created_campaign_id:$scope.campaign.created_campaign_id});
     //serp/live
     $scope.rootURL = 'http://api.domaincrawler.com/v2/';
     $scope.login_email = 'api_username=cem@copypanthers.com';
@@ -31,17 +33,22 @@ angular.module('canApp')
         });
     }
 
-    //get all serach engines
-    var urlSearchEngineBase = $scope.rootURL+'searchengines?'+ $scope.login_email+'&'+$scope.login_API_KEY;
-    var onResourceComplete = function(response) {
-      $scope.allengines = response.data;
 
+
+    //get all search engines...
+    var onResourceComplete = function(response) {
+      $scope.allengines = JSON.parse(response.data);
+      //  console.log('success');
+      //  console.log(response.data);
     };
 
     var onError = function(reason) {
       $scope.error = "Could not fetch search engines";
+      console.log($scope.error);
     };
 
-    $http.get(urlSearchEngineBase)
+    $http.get('/api/campaigns/searchengines')
       .then(onResourceComplete, onError);
+
+
   }]);
