@@ -33,7 +33,31 @@ angular.module('canApp')
         });
     }
 
+    //do serp
+    //create company
+    $scope.doSERP = function(form){
+      var deferred = $q.defer();
 
+      var payload = {
+        keyword          : $scope.searchword.keyword,
+        searchengine_id: 1
+      };
+          $http({
+        method: 'get',
+        url: '/api/searchwords/serp',
+        data: payload
+      })
+        .success(function(data, status, headers, config) {
+          deferred.resolve(data);
+          console.log(data);
+        })
+        .error(function(data){
+          deferred.reject(data);
+          console.log('error');
+          console.log(data);
+        })
+      return deferred.promise;
+    };
 
     //get all search engines...
     var onResourceComplete = function(response) {
