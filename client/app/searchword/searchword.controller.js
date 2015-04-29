@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('canApp')
-  .controller('SearchwordCtrl',['$scope','$http','Searchword', 'Campaign', function ($scope, $http, Searchword, Campaign) {
+  .controller('SearchwordCtrl',['$scope','$q','$http','Searchword', 'Campaign', function ($scope,$q, $http, Searchword, Campaign) {
     $scope.message = 'Hello';
 
     //get all keywords collection...
@@ -18,20 +18,7 @@ angular.module('canApp')
     $scope.login_API_KEY = 'api_key=4adca9f52d8719155f9c898a2b8c38da56364e48';
 
     $scope.searchword = {};
-    $scope.serpKeyword = function(id){
-      var keyword = Searchword.findById();
-      var rootURL = $scope.rootURL +'serp/live' + [$scope.login_email , $scope.login_API_KEY , 'keyword='+keyword.keyword,'searchengine+id='+keyword.searchengine_id].join('&');
-      $http.get(rootURL).
-        then(function(data){
-          console.log(data);
-          $scope.searchword = Searchword.get({id : id});
-          $scope.searchword.response = data;
-          $scope.searchword.$save();
-        }).
-        error(function(err){
 
-        });
-    }
 
     //do serp
     //create company
@@ -39,17 +26,22 @@ angular.module('canApp')
       var deferred = $q.defer();
 
       var payload = {
-        keyword          : $scope.searchword.keyword,
+        keyword          : $scope.searchword.keyword.keyword,
         searchengine_id: 1
       };
           $http({
         method: 'get',
         url: '/api/searchwords/serp',
-        data: payload
+        params:payload
       })
         .success(function(data, status, headers, config) {
           deferred.resolve(data);
           console.log(data);
+              $scope.searchword.response = data;
+              Searchword.update($scope.searchword,function(data){
+                console.log('updated');
+                console.log(data);
+              })
         })
         .error(function(data){
           deferred.reject(data);

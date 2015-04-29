@@ -2,7 +2,8 @@
 
 var _ = require('lodash');
 var Searchword = require('./searchword.model');
-
+var url = require('url');
+var request = require('request');
 // Get list of searchwords
 exports.index = function(req, res) {
   Searchword.find(function (err, searchwords) {
@@ -30,14 +31,18 @@ exports.create = function(req, res) {
 exports.serp = function(req, response) {
 
   var rootURL = 'http://api.domaincrawler.com/v2/serp/live?api_username=cem@copypanthers.com&api_key=4adca9f52d8719155f9c898a2b8c38da56364e48';
-  var params = 'keyword'+req.body.keyword + '&searchengine_id'+req.body.searchengine_id;
-  var target_URL = rootURL +encodeURIComponent(params);
+
+  var params = '&keyword='+req.query.keyword + '&searchengine_id='+req.query.searchengine_id;
+  //var target_URL = rootURL +encodeURIComponent(params);
+  var target_URL = rootURL +params;
+  console.log(target_URL);
   request(target_URL, function (error, res, body) {
     if (!error && res.statusCode == 200) {
       console.log(body) // Show the HTML for the Google homepage.
       response.json(body.toString('utf8'));
     }
   })
+
 };
 // Updates an existing searchword in the DB.
 exports.update = function(req, res) {
