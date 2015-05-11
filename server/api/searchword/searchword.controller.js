@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Searchword = require('./searchword.model');
 var url = require('url');
 var request = require('request');
-var serialize = require('serialize');
+//var serialize = require('serialize');
 // Get list of searchwords
 exports.index = function(req, res) {
   Searchword.find(function (err, searchwords) {

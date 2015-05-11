@@ -30,7 +30,7 @@ angular.module('canApp')
         searchengine_id: 1
       };
           $http({
-        method: 'get',
+        method: 'put',
         url: '/api/searchwords/serp',
         params:payload
       })
@@ -40,7 +40,7 @@ angular.module('canApp')
 
               $scope.updatedata= Searchword.get({id : $scope.searchword.keyword._id},function(){
                 $scope.updatedata.response = data;
-                $scope.updatedata.$update(function(){
+                  $scope.updatedata.$update(function(){
                   console.log('done');
                 });
               });
