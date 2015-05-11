@@ -4,6 +4,7 @@ var _ = require('lodash');
 var Searchword = require('./searchword.model');
 var url = require('url');
 var request = require('request');
+var serialize = require('serialize');
 // Get list of searchwords
 exports.index = function(req, res) {
   Searchword.find(function (err, searchwords) {
@@ -39,7 +40,7 @@ exports.serp = function(req, response) {
   request(target_URL, function (error, res, body) {
     if (!error && res.statusCode == 200) {
       console.log(body) // Show the HTML for the Google homepage.
-      response.json(body.toString('utf8'));
+      response.json(body);
     }
   })
 
@@ -51,10 +52,12 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!searchword) { return res.send(404); }
     var updated = _.merge(searchword, req.body);
+
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, searchword);
     });
+
   });
 };
 

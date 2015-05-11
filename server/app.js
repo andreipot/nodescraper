@@ -23,7 +23,14 @@ var app = express();
 var server = require('http').createServer(app);
 require('./config/express')(app);
 require('./routes')(app);
-app.use(bodyParser.urlencoded({limit: '50mb'}));
+
+//limit handling
+app.use(bodyParser.urlencoded({
+  extended : true
+}));
+
+//app.use(bodyParser.json());
+
 app.use(bodyParser.json({limit: '50mb'}));
 // Start server
 server.listen(config.port, config.ip, function () {
