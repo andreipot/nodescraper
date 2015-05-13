@@ -1,0 +1,27 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="container" >
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Dashboard</h1>
+    </div>
+    <div class="col-sm-12">
+        <!-- dashboard -->
+        <table>
+          <thead>
+            <tr>
+              <th>Campaign Name</th>
+              <th>Completion Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-options="">
+              <td>{{campaign_name}}</td>
+              <td>{{completion_rate}}</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+  <hr>
+</div>

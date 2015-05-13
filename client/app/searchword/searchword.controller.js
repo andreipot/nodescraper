@@ -17,6 +17,7 @@ angular.module('canApp')
     $scope.searchword = {};
     $scope.campaign = {};
 
+    $scope.completed = 0;
     //do serp
     //keyword is for searchword
     $scope.doSERP = function(searchword){
@@ -57,7 +58,7 @@ angular.module('canApp')
 
 
     $scope.serpCampaign = function() {
-      console.log('fuck');
+
       if(!$scope.campaign)
         return;
       //first get all campaign searchwords
@@ -67,17 +68,44 @@ angular.module('canApp')
       });
 
       console.log(searchwords);
+      var total = searchwords.length;
+      var done = 0;
       angular.forEach(searchwords,function(searchword, key){
-        $scope.doSERP(searchword)
-          .then(function(data){
-            console.log('+1');
-            console.log(data);
-          })
-          .error(function(data){
-            console.log('error');
-            console.log(data);
-          })
+        var keepgoing = false;
+        if(searchword.response != '')
+        {
+          done++;
+          keepgoing = true;
+        }
+        if(!keepgoing) {
+          $scope.doSERP(searchword)
+            .then(function(data){
+              console.log('+1');
+              // console.log(data);
+              done++;
+              $scope.completed = done / total * 100.0;
+            });
+        }
+
       });
+    }
+    $scope.getCampaignSerpRate = function(campaign) {
+
+      //first get all campaign searchwords
+      //var searchwords = {};
+      var searchwords = _.filter($scope.searchwords,function(data){
+        return data.created_campaign_id == campaign.created_campaign_id;
+      });
+
+      console.log(searchwords);
+      var total = searchwords.length;
+      var done = 0;
+      angular.forEach(searchwords,function(searchword, key){
+        if(searchword.response != ''){
+          done++;
+        }
+      });
+      return  { done : done,  total: total};
     }
 
 
