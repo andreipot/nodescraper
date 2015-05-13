@@ -6,12 +6,12 @@
 
     </div>
     <div class="col-sm-12">
-      <form class="form" name="form" ng-submit="doSERP()" novalidate>
+      <form class="form" name="form" ng-submit="serpCampaign()" novalidate>
 
         <div class="form-group">
           <label>Select Campaign</label>
 
-          <select name="campaign_id" class="form-control" ng-model="searchword.campaign_id" ng-options="campaign.name for campaign in campaigns track by campaign.created_campaign_id" >
+          <select name="campaign_id" class="form-control" ng-model="campaign" ng-options="campaign.name for campaign in campaigns track by campaign.created_campaign_id" >
             <option selected>Select Campaign</option>
           </select>
         </div>
@@ -39,6 +39,9 @@
 
         <div class="form-group">
           <lablel>Keyword serped : </lablel>
+          <p>
+            {{campaign}}
+          </p>
           <p>
             {{searchword.response}}
           </p>

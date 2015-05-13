@@ -14,46 +14,73 @@ angular.module('canApp')
     $scope.searchwords = Searchword.query();//{created_campaign_id:$scope.campaign.created_campaign_id});
     //serp/live
     $scope.rootURL = 'http://api.domaincrawler.com/v2/';
-    $scope.login_email = 'api_username=cem@copypanthers.com';
-    $scope.login_API_KEY = 'api_key=4adca9f52d8719155f9c898a2b8c38da56364e48';
-
     $scope.searchword = {};
-
+    $scope.campaign = {};
 
     //do serp
-    //create company
-    $scope.doSERP = function(form){
+    //keyword is for searchword
+    $scope.doSERP = function(searchword){
+
       var deferred = $q.defer();
+      //updated searchword data
       $scope.updatedata = new Searchword();
+
       var payload = {
-        keyword          : $scope.searchword.keyword.keyword,
-        searchengine_id: 1
+        keyword          : searchword.keyword,
+        searchengine_id  : searchword.searchengine_id
       };
-          $http({
+
+      //call node API
+      $http({
         method: 'put',
         url: '/api/searchwords/serp',
         params:payload
       })
         .success(function(data, status, headers, config) {
           deferred.resolve(data);
-          console.log(data);
+          //console.log(data);
 
-              $scope.updatedata= Searchword.get({id : $scope.searchword.keyword._id},function(){
-                $scope.updatedata.response = data;
-                  $scope.updatedata.$update(function(){
-                  console.log('done');
-                });
-              });
-
-
-        })
-        .error(function(data){
-          deferred.reject(data);
-          console.log('error');
-          console.log(data);
-        })
-      return deferred.promise;
+          $scope.updatedata= Searchword.get({id : searchword._id},function(){
+            $scope.updatedata.response = data;
+            $scope.updatedata.$update(function(){
+              console.log('done');
+        });
+      });
+    })
+      .error(function(data){
+        deferred.reject(data);
+        console.log('error');
+        console.log(data);
+      })
+     return deferred.promise;
     };
+
+
+    $scope.serpCampaign = function() {
+      console.log('fuck');
+      if(!$scope.campaign)
+        return;
+      //first get all campaign searchwords
+      //var searchwords = {};
+      var searchwords = _.filter($scope.searchwords,function(data){
+          return data.created_campaign_id == $scope.campaign.created_campaign_id;
+      });
+
+      console.log(searchwords);
+      angular.forEach(searchwords,function(searchword, key){
+        $scope.doSERP(searchword)
+          .then(function(data){
+            console.log('+1');
+            console.log(data);
+          })
+          .error(function(data){
+            console.log('error');
+            console.log(data);
+          })
+      });
+    }
+
+
 
     //get all search engines...
     var onResourceComplete = function(response) {
