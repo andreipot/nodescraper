@@ -71,8 +71,8 @@ angular.module('canApp')
         var obj=$filter('csvToObj')(string);
         //do what you want with obj !
         //save Keyword collection...
-        console.log(obj);
-        console.log('got files');
+        //console.log(obj);
+        //console.log('got files');
         $scope.MyFiles = obj;
       }
       reader.readAsText(files[0]);
@@ -91,11 +91,11 @@ angular.module('canApp')
             response: ''
           };
 
-          console.log('saving');
-          console.log(keyword_document);
+          //console.log('saving');
+          //console.log(keyword_document);
           Searchword.save(keyword_document, function(data){
-            console.log(data);
-            console.log('keyword saved');
+            //console.log(data);
+            //console.log('keyword saved');
         });
       });
     }
@@ -105,7 +105,7 @@ angular.module('canApp')
       createcampaign(form)
         .then(function(data){
           var result = JSON.parse(data);
-          console.log(result);
+          //console.log(result);
           $scope.campaign_id = result.id;
           //save form into monogodb by calling local API
 
@@ -120,7 +120,7 @@ angular.module('canApp')
               user_id: $scope.campaign.user_id
             }
               Campaign.save(campaigndata, function(data){
-                console.log(data);
+                //console.log(data);
                 $scope.current_campaign = data._id;
                 $scope.saveKeywordsCollection(data);
               })
@@ -129,9 +129,9 @@ angular.module('canApp')
         })
         .catch(function(errors){
           $scope.errors = errors;
-          console.log(errors);
+          //console.log(errors);
       }).finally(function(data){
-        console.log('got');
+        //console.log('got');
     });
    }
 

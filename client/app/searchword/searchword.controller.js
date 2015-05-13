@@ -9,7 +9,7 @@ angular.module('canApp')
 
     //get all campaigns
     $scope.campaigns = Campaign.query();
-    console.log($scope.campaigns);
+    //console.log($scope.campaigns);
     //get all keywrods for a specific campaign
     $scope.searchwords = Searchword.query();//{created_campaign_id:$scope.campaign.created_campaign_id});
     //serp/live
@@ -44,14 +44,14 @@ angular.module('canApp')
           $scope.updatedata= Searchword.get({id : searchword._id},function(){
             $scope.updatedata.response = data;
             $scope.updatedata.$update(function(){
-              console.log('done');
+              //console.log('done');
         });
       });
     })
       .error(function(data){
         deferred.reject(data);
-        console.log('error');
-        console.log(data);
+        //console.log('error');
+        //console.log(data);
       })
      return deferred.promise;
     };
@@ -67,7 +67,7 @@ angular.module('canApp')
           return data.created_campaign_id == $scope.campaign.created_campaign_id;
       });
 
-      console.log(searchwords);
+      //console.log(searchwords);
       var total = searchwords.length;
       var done = 0;
       angular.forEach(searchwords,function(searchword, key){
@@ -80,7 +80,7 @@ angular.module('canApp')
         if(!keepgoing) {
           $scope.doSERP(searchword)
             .then(function(data){
-              console.log('+1');
+              //console.log('+1');
               // console.log(data);
               done++;
               $scope.completed = done / total * 100.0;
@@ -97,7 +97,7 @@ angular.module('canApp')
         return data.created_campaign_id == campaign.created_campaign_id;
       });
 
-      console.log(searchwords);
+      //console.log(searchwords);
       var total = searchwords.length;
       var done = 0;
       angular.forEach(searchwords,function(searchword, key){
@@ -119,7 +119,7 @@ angular.module('canApp')
 
     var onError = function(reason) {
       $scope.error = "Could not fetch search engines";
-      console.log($scope.error);
+      //console.log($scope.error);
     };
 
     $http.get('/api/campaigns/searchengines')

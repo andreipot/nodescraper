@@ -36,10 +36,10 @@ exports.serp = function(req, response) {
   var params = '&keyword='+req.query.keyword + '&searchengine_id='+req.query.searchengine_id;
   //var target_URL = rootURL +encodeURIComponent(params);
   var target_URL = rootURL +params;
-  console.log(target_URL);
+  //console.log(target_URL);
   request(target_URL, function (error, res, body) {
     if (!error && res.statusCode == 200) {
-      console.log(body) // Show the HTML for the Google homepage.
+      //console.log(body) // Show the HTML for the Google homepage.
       response.json(body);
     }
   })
