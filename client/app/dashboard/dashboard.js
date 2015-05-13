@@ -5,6 +5,7 @@ angular.module('canApp')
     $routeProvider
       .when('/dashboard', {
         templateUrl: 'app/dashboard/dashboard.html',
-        controller: 'DashboardCtrl'
+        controller: 'DashboardCtrl',
+        authenticate: true
       });
   });

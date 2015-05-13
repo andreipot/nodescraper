@@ -1,18 +1,48 @@
 'use strict';
 
 angular.module('canApp')
-  .controller('DashboardCtrl',['$scope','$q','$http','Searchword', 'Campaign', function ($scope,$q, $http, Searchword, Campaign) {
+  .controller('DashboardCtrl',['$scope','$q','$http','Searchword', 'Campaign','Auth', function ($scope,$q, $http, Searchword, Campaign,Auth) {
     $scope.message = 'Hello';
 
-    //get all keywords collection...
-    $scope.searchwords = Searchword.query();
+
 
     //get all campaigns
-    $scope.campaigns = Campaign.query();
+    $scope.campaigns = {};
 
     $scope.completed = 0;
+
+
+    var campaigns = Campaign.query(function(){
+      console.log('all campaigns');
+      console.log(campaigns);
+      var user_id = Auth.getCurrentUser()._id;
+
+      $scope.campaigns = _.filter(campaigns,function(data){
+        return _.indexOf(data.user_id, user_id) > -1;
+      });
+
+      //get all keywords collection...
+      $scope.searchwords = Searchword.query(function(){
+        angular.forEach($scope.campaigns,function(campaign,key){
+          campaign.serp_status = $scope.getCampaignSerpRate(campaign);
+        });
+        //got all campaign serp status
+      });
+
+    });
+
     //do serp
     //keyword is for searchword
+    $scope.loadCampaigns = function() {
+      var user_id = Auth.getCurrentUser()._id;
+
+      $scope.campaigns = _.filter($scope.campaigns,function(data){
+        return _.indexOf(data.user_id, user_id) > -1;
+      });
+      angular.forEach($scope.campaigns,function(campaign,key){
+        campaign.serp_status = $scope.getCampaignSerpRate(campaign);
+      });
+    }
 
     $scope.getCampaignSerpRate = function(campaign) {
 
@@ -32,23 +62,6 @@ angular.module('canApp')
       });
       return  { done : done,  total: total};
     }
-
-
-
-    //get all search engines...
-    var onResourceComplete = function(response) {
-      $scope.allengines = JSON.parse(response.data);
-      //  console.log('success');
-      //  console.log(response.data);
-    };
-
-    var onError = function(reason) {
-      $scope.error = "Could not fetch search engines";
-      console.log($scope.error);
-    };
-
-    $http.get('/api/campaigns/searchengines')
-      .then(onResourceComplete, onError);
-
+    $scope.loadCampaigns();
 
   }]);

@@ -4,20 +4,22 @@
     <div class="col-sm-12">
       <h1>Dashboard</h1>
     </div>
-    <div class="col-sm-12">
+    <div class="col-md-12 col-xs-12 col-sm-12">
         <!-- dashboard -->
-        <table>
+      
+        <table style="width: 100%;">
           <thead>
             <tr>
-              <th>Campaign Name</th>
-              <th>Completion Rate</th>
+              <th>Campaign</th>
+              <th>Completed</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-options="">
-              <td>{{campaign_name}}</td>
-              <td>{{completion_rate}}</td>
-              <td></td>
+            <tr ng-repeat="campaign in campaigns">
+              <td>{{campaign.name}}</td>
+              <td>{{campaign.serp_status.done}} / {{campaign.serp_status.total}}</td>
+              <td><div ng-style="{'background':'#ff0000', 'height':'10px','width':campaign.serp_status.done/campaign.serp_status.total*100+'%'}"></div> </td>
             </tr>
           </tbody>
         </table>

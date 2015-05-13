@@ -10,6 +10,10 @@ angular.module('canApp')
 
     $scope.loginMenu = [
       {
+        'title': 'Dashboard',
+        'link': '/dashboard'
+      },
+      {
         'title': 'Campaign',
         'link': '/campaign'
       },
