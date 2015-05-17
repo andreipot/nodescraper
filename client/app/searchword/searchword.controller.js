@@ -125,5 +125,4 @@ angular.module('canApp')
     $http.get('/api/campaigns/searchengines')
       .then(onResourceComplete, onError);
 
-
   }]);
