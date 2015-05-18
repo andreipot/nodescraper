@@ -37,7 +37,7 @@ exports.create = function(req, res) {
 
 exports.searchengines = function(req, response) {
 
-  var rootURL = 'http://api.domaincrawler.com/v2/searchengines?api_username=cem@copypanthers.com&api_key=4adca9f52d8719155f9c898a2b8c38da56364e48';
+  var rootURL = 'http://api.domaincrawler.com/v2/searchengines?api_username=XXXXX&api_key=XXXXX';
 
   request(rootURL, function (error, res, body) {
     if (!error && res.statusCode == 200) {
@@ -48,7 +48,7 @@ exports.searchengines = function(req, response) {
 };
 exports.createcampaign = function(req, response) {
 
-  var rootURL = 'http://api.domaincrawler.com/v2/campaigns?api_username=cem@copypanthers.com&api_key=4adca9f52d8719155f9c898a2b8c38da56364e48';
+  var rootURL = 'http://api.domaincrawler.com/v2/campaigns?api_username=XXXX&api_key=XXXXX';
   console.log(req.body);
   var payload = {
     name          : req.body.name,
