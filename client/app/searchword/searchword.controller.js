@@ -37,13 +37,11 @@ angular.module('canApp')
         params:payload
       })
         .success(function(data, status, headers, config) {
-          deferred.resolve(data);
-          //console.log(data);
-
           $scope.updatedata= Searchword.get({id : searchword._id},function(){
             $scope.updatedata.response = data;
             $scope.updatedata.$update(function(){
               //console.log('done');
+              deferred.resolve(data);
         });
       });
     })
@@ -51,6 +49,7 @@ angular.module('canApp')
         deferred.reject(data);
         //console.log('error');
         //console.log(data);
+          deferred.reject(data);
       })
      return deferred.promise;
     };
@@ -69,6 +68,7 @@ angular.module('canApp')
       //console.log(searchwords);
       var total = searchwords.length;
       var done = 0;
+
       angular.forEach(searchwords,function(searchword, key){
         var keepgoing = false;
         if(searchword.response != '')
@@ -76,14 +76,19 @@ angular.module('canApp')
           done++;
           keepgoing = true;
         }
+
         if(!keepgoing) {
-          $scope.doSERP(searchword)
-            .then(function(data){
-              console.log('+1');
-              // console.log(data);
-              done++;
-              $scope.completed = done / total * 100.0;
-            });
+          var deferred = $q.defer();
+          var promise = $q.promise;
+          var prom = [];
+          prom.push($scope.doSERP(searchword));
+          $q.all(prom).then(function(){
+            console.log('+1');
+            // console.log(data);
+            done++;2
+            $scope.completed = done / total * 100.0;
+          });
+          deferred.resolve();
         }
 
       });
