@@ -31,7 +31,7 @@ exports.create = function(req, res) {
 };
 exports.serp = function(req, response) {
 
-  var rootURL = 'http://api.domaincrawler.com/v2/serp/live?api_username=cem@copypanthers.com&api_key=4adca9f52d8719155f9c898a2b8c38da56364e48';
+  var rootURL = 'http://api.domaincrawler.com/v2/serp/live?api_username=XXXXX&api_key=XXXXXXXXXX';
 
   var params = '&keyword='+req.query.keyword + '&searchengine_id='+req.query.searchengine_id +'&domain='+req.query.domain;
   //var target_URL = rootURL +encodeURIComponent(params);
