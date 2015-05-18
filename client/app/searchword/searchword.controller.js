@@ -10,8 +10,6 @@ angular.module('canApp')
     //get all campaigns
     $scope.campaigns = Campaign.query();
     //console.log($scope.campaigns);
-    //get all keywrods for a specific campaign
-    $scope.searchwords = Searchword.query();//{created_campaign_id:$scope.campaign.created_campaign_id});
     //serp/live
     $scope.rootURL = 'http://api.domaincrawler.com/v2/';
     $scope.searchword = {};
@@ -81,7 +79,7 @@ angular.module('canApp')
         if(!keepgoing) {
           $scope.doSERP(searchword)
             .then(function(data){
-              //console.log('+1');
+              console.log('+1');
               // console.log(data);
               done++;
               $scope.completed = done / total * 100.0;
