@@ -28,7 +28,8 @@ angular.module('canApp')
 
       var payload = {
         keyword          : searchword.keyword,
-        searchengine_id  : searchword.searchengine_id
+        searchengine_id  : searchword.searchengine_id,
+        domain           : $scope.campaign.domain
       };
 
       //call node API
